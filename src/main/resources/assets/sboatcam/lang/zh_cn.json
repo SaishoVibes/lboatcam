@@ -1,0 +1,18 @@
+{
+    "key.sboatcam.toggle": "开关",
+    "key.sboatcam.lookbehind": "后视镜",
+    "key.sboatcam.resetcamera": "重置镜头",
+    "text.autoconfig.sboatcam.title": "BoatCam设置",
+    "text.autoconfig.sboatcam.option.boatcam": "BoatCam",
+    "text.autoconfig.sboatcam.option.oldBoatcam": "旧版Boatcam",
+    "text.autoconfig.sboatcam.option.delay": "延迟",
+    "text.autoconfig.sboatcam.option.strength": "力度",
+    "text.autoconfig.sboatcam.option.perspective": "视角",
+    "text.autoconfig.sboatcam.option.perspective.none": "无",
+    "text.autoconfig.sboatcam.option.perspective.firstPerson": "第一人称",
+    "text.autoconfig.sboatcam.option.perspective.thirdPerson": "第三人称",
+    "text.autoconfig.sboatcam.option.fixedPitch": "固定俯仰角",
+    "text.autoconfig.sboatcam.option.pitch": "俯仰角度",
+    "text.autoconfig.sboatcam.option.lockedYaw": "锁定偏航角",
+    "text.autoconfig.sboatcam.option.turnLimitDisabled": "移除转动限制"
+  }

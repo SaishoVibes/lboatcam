@@ -1,0 +1,18 @@
+{
+    "key.sboatcam.toggle": "Toggle",
+    "key.sboatcam.lookbehind": "Look behind",
+    "key.sboatcam.resetcamera": "Reset camera",
+    "text.autoconfig.sboatcam.title": "BoatCam Config",
+    "text.autoconfig.sboatcam.option.boatcam": "BoatCam",
+    "text.autoconfig.sboatcam.option.oldBoatcam": "Old Boatcam",
+    "text.autoconfig.sboatcam.option.delay": "Delay",
+    "text.autoconfig.sboatcam.option.strength": "Strength",
+    "text.autoconfig.sboatcam.option.perspective": "Perspective",
+    "text.autoconfig.sboatcam.option.perspective.none": "None",
+    "text.autoconfig.sboatcam.option.perspective.firstPerson": "First person",
+    "text.autoconfig.sboatcam.option.perspective.thirdPerson": "Third person",
+    "text.autoconfig.sboatcam.option.fixedPitch": "Fixed pitch",
+    "text.autoconfig.sboatcam.option.pitch": "Pitch",
+    "text.autoconfig.sboatcam.option.lockedYaw": "Locked yaw",
+    "text.autoconfig.sboatcam.option.turnLimitDisabled": "Turn limit disabled"
+}
