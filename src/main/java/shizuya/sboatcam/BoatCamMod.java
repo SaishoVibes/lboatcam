@@ -173,7 +173,12 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
             }
             yaw = previousYaw + normaliseAngle(yaw - previousYaw) * getConfig().getDelay();
             player.setYaw(yaw + (float) offset);
-            if (getConfig().shouldFixPitch()) player.setPitch(getConfig().getPitch());
+            if (getConfig().shouldFixPitch()) {
+                player.setPitch(getConfig().getPitch());
+                if (this.lookingBehind) {
+                    invertPitch();
+                }
+            }
         }
         // save pos and yaw
         previousYaw = yaw;
