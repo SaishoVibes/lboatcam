@@ -5,7 +5,7 @@
     "text.autoconfig.sboatcam.title": "BoatCam Config",
     "text.autoconfig.sboatcam.option.boatcam": "BoatCam",
     "text.autoconfig.sboatcam.option.oldBoatcam": "Old Boatcam",
-    "text.autoconfig.sboatcam.option.delay": "Delay",
+    "text.autoconfig.sboatcam.option.smoothening": "Smoothening",
     "text.autoconfig.sboatcam.option.strength": "Strength",
     "text.autoconfig.sboatcam.option.perspective": "Perspective",
     "text.autoconfig.sboatcam.option.perspective.none": "None",

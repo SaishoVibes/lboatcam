@@ -10,15 +10,15 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 @Config(name = "sboatcam")
 public final class BoatCamConfig implements ConfigData {
     @Comment("Whether the camera should be controlled by this mod.\nNOTE: This setting can be toggled using a key bind.")
-    private boolean boatcam;
+    private boolean boatcam = true;
     @Comment("Whether the old boatcam algorithm is used.")
     private boolean oldBoatcam;
     @Comment("0 - Camera moves instantly.\nIncrease - Smoother camera motion.")
-    @BoundedDiscrete(min = 0, max = 30)
-    private int delay;
+    @BoundedDiscrete(min = 0, max = 100)
+    private int smoothening;
     @Comment("Decrease - Follow the direction boat is facing more.\nIncrease - Follow the direction boat is moving more.")
-    @BoundedDiscrete(min = -30, max = 30)
-    private int strength;
+    @BoundedDiscrete(min = 0, max = 100)
+    private int strength = 50;
     @Comment("Perspective when riding a boat in boat mode. Perspective wont change when this is set to none.")
     private Perspective perspective = Perspective.NONE;
     @Comment("Whether to fix the camera angle at a certain pitch.")
@@ -46,12 +46,12 @@ public final class BoatCamConfig implements ConfigData {
         AutoConfig.getConfigHolder(BoatCamConfig.class).save();
     }
 
-    public float getDelay() {
-        return (float) Math.pow(2d, -delay / 10d);
+    public float getSmoothening() {
+        return (float) smoothening / 100;
     }
 
     public float getStrength() {
-        return (float) (Math.pow(2d, -strength / 10d));
+        return (float) strength / 100;
     }
 
     public boolean isBoatcam() {

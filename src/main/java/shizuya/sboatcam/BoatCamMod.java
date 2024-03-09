@@ -166,12 +166,12 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
         if (this.speed > 0.4) {
             float direction = (float) Math.toDegrees(Math.atan2(-velocity.getX(), velocity.getZ()));
             if (getConfig().isOldBoatcam()) {
-                yaw += normaliseAngle(direction - yaw) * min(1, (float) this.speed / 60 / getConfig().getStrength());
+                yaw += normaliseAngle(direction - yaw) * min(1, (float) this.speed * getConfig().getStrength() / (60 * (1 - getConfig().getStrength())));
             } else {
                 float slipAngle = (float) Math.toRadians(normaliseAngle(direction - yaw));
-                yaw += Math.toDegrees(slipAngle - atan2(sin(slipAngle) * 16 * 1.6 * getConfig().getStrength(), (cos(slipAngle) * 16 * 1.6 * getConfig().getStrength() + this.speed)));
+                yaw += Math.toDegrees(slipAngle - atan2(sin(slipAngle) * 16 * 1.6 * (1 - getConfig().getStrength()), (cos(slipAngle) * 16 * 1.6 * (1 - getConfig().getStrength()) + this.speed * getConfig().getStrength())));
             }
-            yaw = previousYaw + normaliseAngle(yaw - previousYaw) * getConfig().getDelay();
+            yaw = previousYaw + normaliseAngle(yaw - previousYaw) * (1 - getConfig().getSmoothening());
             player.setYaw(yaw + (float) offset);
             if (getConfig().shouldFixPitch()) {
                 player.setPitch(getConfig().getPitch());

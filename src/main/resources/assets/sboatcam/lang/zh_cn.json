@@ -5,7 +5,7 @@
     "text.autoconfig.sboatcam.title": "BoatCam设置",
     "text.autoconfig.sboatcam.option.boatcam": "BoatCam",
     "text.autoconfig.sboatcam.option.oldBoatcam": "旧版Boatcam",
-    "text.autoconfig.sboatcam.option.delay": "延迟",
+    "text.autoconfig.sboatcam.option.smoothening": "平滑化",
     "text.autoconfig.sboatcam.option.strength": "力度",
     "text.autoconfig.sboatcam.option.perspective": "视角",
     "text.autoconfig.sboatcam.option.perspective.none": "无",
