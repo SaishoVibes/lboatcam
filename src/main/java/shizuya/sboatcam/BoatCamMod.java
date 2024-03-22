@@ -33,6 +33,8 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     // key binds
     private final KeyBinding TOGGLE = new KeyBinding("key.sboatcam.toggle", KEYSYM, -1, "sBoatCam");
     private final KeyBinding LOOK_BEHIND = new KeyBinding("key.sboatcam.lookbehind", KEYSYM, GLFW_KEY_B, "sBoatCam");
+    private final KeyBinding LOOK_LEFT = new KeyBinding("key.sboatcam.lookleft", KEYSYM, -1, "sBoatCam");
+    private final KeyBinding LOOK_RIGHT = new KeyBinding("key.sboatcam.lookright", KEYSYM, -1, "sBoatCam");
     private final KeyBinding RESET_CAMERA = new KeyBinding("key.sboatcam.resetcamera", KEYSYM, GLFW_KEY_N, "sBoatCam");
 
     // things to remember temporarily
@@ -44,12 +46,16 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
 
     // states
     private boolean lookingBehind;
+    private boolean lookingLeft;
+    private boolean lookingRight;
 
     @Override
     public void onInitialize() {
         AutoConfig.register(BoatCamConfig.class, JanksonConfigSerializer::new);
         KeyBindingHelper.registerKeyBinding(TOGGLE);
         KeyBindingHelper.registerKeyBinding(LOOK_BEHIND);
+        KeyBindingHelper.registerKeyBinding(LOOK_LEFT);
+        KeyBindingHelper.registerKeyBinding(LOOK_RIGHT);
         KeyBindingHelper.registerKeyBinding(RESET_CAMERA);
         ClientTickEvents.START_WORLD_TICK.register(this::onClientEndWorldTick);
         LookDirectionChangingEvent.EVENT.register(this);
@@ -129,6 +135,22 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
                         case THIRD_PERSON -> client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
                         default -> resetPerspective();
                     }
+                }
+            }
+            if (LOOK_LEFT.isPressed() != this.lookingLeft) {
+                this.lookingLeft = LOOK_LEFT.isPressed();
+                if (LOOK_LEFT.isPressed()) {
+                    this.offset -= 90;
+                } else {
+                    this.offset += 90;
+                }
+            }
+            if (LOOK_RIGHT.isPressed() != this.lookingRight) {
+                this.lookingRight = LOOK_RIGHT.isPressed();
+                if (LOOK_RIGHT.isPressed()) {
+                    this.offset += 90;
+                } else {
+                    this.offset -= 90;
                 }
             }
         } else {

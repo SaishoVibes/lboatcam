@@ -1,6 +1,8 @@
 {
     "key.sboatcam.toggle": "开关",
     "key.sboatcam.lookbehind": "后视镜",
+    "key.sboatcam.lookleft": "看向左侧",
+    "key.sboatcam.lookright": "看向右侧",
     "key.sboatcam.resetcamera": "重置镜头",
     "text.autoconfig.sboatcam.title": "BoatCam设置",
     "text.autoconfig.sboatcam.option.boatcam": "BoatCam",

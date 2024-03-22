@@ -1,6 +1,8 @@
 {
     "key.sboatcam.toggle": "Toggle",
     "key.sboatcam.lookbehind": "Look behind",
+    "key.sboatcam.lookleft": "Look left",
+    "key.sboatcam.lookright": "Look right",
     "key.sboatcam.resetcamera": "Reset camera",
     "text.autoconfig.sboatcam.title": "BoatCam Config",
     "text.autoconfig.sboatcam.option.boatcam": "BoatCam",
