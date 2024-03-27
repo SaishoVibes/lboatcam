@@ -40,9 +40,9 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     // things to remember temporarily
     private Perspective perspective;
     private float previousYaw;
-    private double speed;
     private double offset;
-    private double scale;
+    private double speed;
+    private double scale; // px to degrees
 
     // states
     private boolean lookingBehind;
@@ -115,62 +115,34 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
                     case THIRD_PERSON -> client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
                 }
             }
+            calculateYaw(client.player, boat);
             if (RESET_CAMERA.isPressed()) {
                 this.offset = 0;
             }
-            calculateYaw(client.player, boat);
             // if pressed state changed
             if (LOOK_BEHIND.isPressed() != this.lookingBehind) {
-                // save state
                 this.lookingBehind = LOOK_BEHIND.isPressed();
-                // handle change
-                invertPitch();
-                if (this.lookingBehind) {
-                    // set look back perspective
-                    client.options.setPerspective(Perspective.THIRD_PERSON_FRONT);
-                } else {
-                    // reset perspective
-                    switch (getConfig().getPerspective()) {
-                        case FIRST_PERSON -> client.options.setPerspective(Perspective.FIRST_PERSON);
-                        case THIRD_PERSON -> client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
-                        default -> resetPerspective();
-                    }
-                }
+                this.offset += this.lookingBehind ? 180 : -180;
             }
             if (LOOK_LEFT.isPressed() != this.lookingLeft) {
                 this.lookingLeft = LOOK_LEFT.isPressed();
-                if (LOOK_LEFT.isPressed()) {
-                    this.offset -= 90;
-                } else {
-                    this.offset += 90;
-                }
+                this.offset += this.lookingLeft ? -90 : 90;
             }
             if (LOOK_RIGHT.isPressed() != this.lookingRight) {
                 this.lookingRight = LOOK_RIGHT.isPressed();
-                if (LOOK_RIGHT.isPressed()) {
-                    this.offset += 90;
-                } else {
-                    this.offset -= 90;
-                }
+                this.offset += this.lookingRight ? 90 : -90;
             }
+            client.player.setYaw(client.player.getYaw() + (float) this.offset);
         } else {
             // first tick after disabling boat mode or leaving boat
             if (this.perspective != null) {
                 resetPerspective();
-                // invert pitch if looking behind
-                if (this.lookingBehind) {
-                    invertPitch();
-                    this.lookingBehind = false;
-                }
+                this.lookingBehind = false;
+                this.lookingLeft = false;
+                this.lookingRight = false;
                 this.offset = 0;
             }
         }
-    }
-
-    private void invertPitch() {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        assert player != null;
-        player.setPitch(-player.getPitch());
     }
 
     private void resetPerspective() {
@@ -193,17 +165,16 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
                 float slipAngle = (float) Math.toRadians(normaliseAngle(direction - yaw));
                 yaw += Math.toDegrees(slipAngle - atan2(sin(slipAngle) * 16 * 1.6 * (1 - getConfig().getStrength()), (cos(slipAngle) * 16 * 1.6 * (1 - getConfig().getStrength()) + this.speed * getConfig().getStrength())));
             }
-            yaw = previousYaw + normaliseAngle(yaw - previousYaw) * (1 - getConfig().getSmoothening());
-            player.setYaw(yaw + (float) offset);
+            yaw = this.previousYaw + normaliseAngle(yaw - this.previousYaw) * (1 - getConfig().getSmoothening());
+            player.setYaw(yaw);
             if (getConfig().shouldFixPitch()) {
                 player.setPitch(getConfig().getPitch());
-                if (this.lookingBehind) {
-                    invertPitch();
-                }
             }
+        } else {
+            player.setYaw(player.getYaw() - (float) this.offset);
         }
         // save pos and yaw
-        previousYaw = yaw;
+        this.previousYaw = yaw;
     }
 
     @Override
