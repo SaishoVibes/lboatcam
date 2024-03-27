@@ -2,15 +2,15 @@
     "schemaVersion": 1,
     "id": "sboatcam",
     "version": "${version}",
-    "name": "sBoatCam",
-    "description": "imba camera mod for boat racing that should have never been allowed",
+    "name": "sboatcam",
+    "description": "Imba camera mod for boat racing that should have never been allowed.",
     "authors": [
         "Bstn1802",
         "Pigalala",
         "5h1zuy4"
     ],
     "contact": {
-        "sources": "https://github.com/5h1zuy4/sBoatCam"
+        "sources": "https://gitlab.com/5h1zuy4/sboatcam"
     },
     "license": "GPL-3.0-or-later",
     "icon": "assets/sboatcam/icon.png",
