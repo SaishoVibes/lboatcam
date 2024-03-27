@@ -31,16 +31,18 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_N;
 
 public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     // key binds
-    private final KeyBinding TOGGLE = new KeyBinding("key.sboatcam.toggle", KEYSYM, -1, "sBoatCam");
-    private final KeyBinding LOOK_BEHIND = new KeyBinding("key.sboatcam.lookbehind", KEYSYM, GLFW_KEY_B, "sBoatCam");
-    private final KeyBinding LOOK_LEFT = new KeyBinding("key.sboatcam.lookleft", KEYSYM, -1, "sBoatCam");
-    private final KeyBinding LOOK_RIGHT = new KeyBinding("key.sboatcam.lookright", KEYSYM, -1, "sBoatCam");
-    private final KeyBinding RESET_CAMERA = new KeyBinding("key.sboatcam.resetcamera", KEYSYM, GLFW_KEY_N, "sBoatCam");
+    private final KeyBinding TOGGLE = new KeyBinding("key.sboatcam.toggle", KEYSYM, -1, "sboatcam");
+    private final KeyBinding LOOK_BEHIND = new KeyBinding("key.sboatcam.lookbehind", KEYSYM, GLFW_KEY_B, "sboatcam");
+    private final KeyBinding LOOK_LEFT = new KeyBinding("key.sboatcam.lookleft", KEYSYM, -1, "sboatcam");
+    private final KeyBinding LOOK_RIGHT = new KeyBinding("key.sboatcam.lookright", KEYSYM, -1, "sboatcam");
+    private final KeyBinding RESET_CAMERA = new KeyBinding("key.sboatcam.resetcamera", KEYSYM, GLFW_KEY_N, "sboatcam");
 
     // things to remember temporarily
     private Perspective perspective;
     private float previousYaw;
     private double offset;
+    private double smoothenedOffset;
+    private double lastSmoothenedOffset;
     private double speed;
     private double scale; // px to degrees
 
@@ -126,13 +128,22 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
             }
             if (LOOK_LEFT.isPressed() != this.lookingLeft) {
                 this.lookingLeft = LOOK_LEFT.isPressed();
-                this.offset += this.lookingLeft ? -90 : 90;
+                if (getConfig().isSmoothenSideLook()) {
+                    this.smoothenedOffset += this.lookingLeft ? -90 : 90;
+                } else {
+                    this.offset += this.lookingLeft ? -90 : 90;
+                }
             }
             if (LOOK_RIGHT.isPressed() != this.lookingRight) {
                 this.lookingRight = LOOK_RIGHT.isPressed();
-                this.offset += this.lookingRight ? 90 : -90;
+                if (getConfig().isSmoothenSideLook()) {
+                    this.smoothenedOffset += this.lookingRight ? 90 : -90;
+                } else {
+                    this.offset += this.lookingRight ? 90 : -90;
+                }
             }
-            client.player.setYaw(client.player.getYaw() + (float) this.offset);
+            this.lastSmoothenedOffset = smoothenAngle((float) this.lastSmoothenedOffset, (float) this.smoothenedOffset);
+            client.player.setYaw(client.player.getYaw() + (float) (this.offset + this.lastSmoothenedOffset));
         } else {
             // first tick after disabling boat mode or leaving boat
             if (this.perspective != null) {
@@ -165,13 +176,13 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
                 float slipAngle = (float) Math.toRadians(normaliseAngle(direction - yaw));
                 yaw += Math.toDegrees(slipAngle - atan2(sin(slipAngle) * 16 * 1.6 * (1 - getConfig().getStrength()), (cos(slipAngle) * 16 * 1.6 * (1 - getConfig().getStrength()) + this.speed * getConfig().getStrength())));
             }
-            yaw = this.previousYaw + normaliseAngle(yaw - this.previousYaw) * (1 - getConfig().getSmoothening());
+            yaw = smoothenAngle(previousYaw, yaw);
             player.setYaw(yaw);
             if (getConfig().shouldFixPitch()) {
                 player.setPitch(getConfig().getPitch());
             }
         } else {
-            player.setYaw(player.getYaw() - (float) this.offset);
+            player.setYaw(player.getYaw() - (float) this.offset - (float) this.lastSmoothenedOffset);
         }
         // save pos and yaw
         this.previousYaw = yaw;
@@ -191,6 +202,10 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
             }
         }
         return false;
+    }
+
+    public static float smoothenAngle(float last, float curr) {
+        return last + normaliseAngle(curr - last) * (1 - getConfig().getSmoothening());
     }
 
     public static float normaliseAngle(float angle) {

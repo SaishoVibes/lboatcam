@@ -16,5 +16,6 @@
     "text.autoconfig.sboatcam.option.fixedPitch": "Fixed pitch",
     "text.autoconfig.sboatcam.option.pitch": "Pitch",
     "text.autoconfig.sboatcam.option.lockedYaw": "Locked yaw",
+    "text.autoconfig.sboatcam.option.smoothenSideLook": "Smoothen side look",
     "text.autoconfig.sboatcam.option.turnLimitDisabled": "Turn limit disabled"
 }

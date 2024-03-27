@@ -28,6 +28,8 @@ public final class BoatCamConfig implements ConfigData {
     private int pitch = 10;
     @Comment("Whether to lock horizontal camera movement.")
     private boolean lockedYaw;
+    @Comment("Whether look left and look right is smoothened")
+    private boolean smoothenSideLook;
     @Comment("Disables the turn limit in a boat.\nNOTE: The turn limit is always disabled in boat mode!")
     private boolean turnLimitDisabled;
 
@@ -81,6 +83,10 @@ public final class BoatCamConfig implements ConfigData {
 
     public Perspective getPerspective() {
         return perspective;
+    }
+
+    public boolean isSmoothenSideLook() {
+        return smoothenSideLook;
     }
 
     public boolean isTurnLimitDisabled() {
