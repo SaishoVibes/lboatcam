@@ -129,7 +129,11 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
                 if (this.lookingBehind) {
                     client.options.setPerspective(Perspective.THIRD_PERSON_FRONT);
                 } else {
-                    client.options.setPerspective(this.perspective);
+                    switch (getConfig().getPerspective()) {
+                        case FIRST_PERSON -> client.options.setPerspective(Perspective.FIRST_PERSON);
+                        case THIRD_PERSON -> client.options.setPerspective(Perspective.THIRD_PERSON_BACK);
+                        default -> client.options.setPerspective(this.perspective);
+                    }
                 }
             }
             if (LOOK_LEFT.isPressed() != this.lookingLeft) {
