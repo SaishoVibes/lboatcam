@@ -41,8 +41,6 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     private Perspective perspective;
     private float previousYaw;
     private double offset;
-    private double smoothenedOffset;
-    private double lastSmoothenedOffset;
     private double speed;
     private double scale; // px to degrees
 
@@ -106,8 +104,6 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
             if (this.perspective == null) {
                 // fix pitch if configured
                 if (getConfig().shouldFixPitch()) client.player.setPitch(getConfig().getPitch());
-                // init look behind
-                // lookingBehind = false;
                 // save perspective
                 this.perspective = client.options.getPerspective();
                 this.previousYaw = boat.getYaw();
@@ -125,7 +121,6 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
             if (LOOK_BEHIND.isPressed() != this.lookingBehind) {
                 client.player.setPitch(-client.player.getPitch());
                 this.lookingBehind = LOOK_BEHIND.isPressed();
-                // this.offset += this.lookingBehind ? 180 : -180;
                 if (this.lookingBehind) {
                     client.options.setPerspective(Perspective.THIRD_PERSON_FRONT);
                 } else {
@@ -138,22 +133,13 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
             }
             if (LOOK_LEFT.isPressed() != this.lookingLeft) {
                 this.lookingLeft = LOOK_LEFT.isPressed();
-                if (getConfig().isSmoothenSideLook()) {
-                    this.smoothenedOffset += this.lookingLeft ? -90 : 90;
-                } else {
-                    this.offset += this.lookingLeft ? -90 : 90;
-                }
+                this.offset += this.lookingLeft ? -getConfig().getSideLookAngle() : getConfig().getSideLookAngle();
             }
             if (LOOK_RIGHT.isPressed() != this.lookingRight) {
                 this.lookingRight = LOOK_RIGHT.isPressed();
-                if (getConfig().isSmoothenSideLook()) {
-                    this.smoothenedOffset += this.lookingRight ? 90 : -90;
-                } else {
-                    this.offset += this.lookingRight ? 90 : -90;
-                }
+                this.offset += this.lookingRight ? getConfig().getSideLookAngle() : -getConfig().getSideLookAngle();
             }
-            this.lastSmoothenedOffset = smoothenAngle((float) this.lastSmoothenedOffset, (float) this.smoothenedOffset);
-            client.player.setYaw(client.player.getYaw() + (float) (this.offset + this.lastSmoothenedOffset));
+            client.player.setYaw(client.player.getYaw() + (float) (this.offset));
         } else {
             // first tick after disabling boat mode or leaving boat
             if (this.perspective != null) {
@@ -197,7 +183,7 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
                 }
             }
         } else {
-            player.setYaw(player.getYaw() - (float) this.offset - (float) this.lastSmoothenedOffset);
+            player.setYaw(player.getYaw() - (float) this.offset);
         }
         // save pos and yaw
         this.previousYaw = yaw;

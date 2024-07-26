@@ -16,6 +16,5 @@
     "text.autoconfig.sboatcam.option.fixedPitch": "固定俯仰角",
     "text.autoconfig.sboatcam.option.pitch": "俯仰角度",
     "text.autoconfig.sboatcam.option.lockedYaw": "锁定偏航角",
-    "text.autoconfig.sboatcam.option.smoothenSideLook": "看向侧方平滑化",
-    "text.autoconfig.sboatcam.option.turnLimitDisabled": "移除转动限制"
+    "text.autoconfig.sboatcam.option.sideLookAngle": "侧方视角角度"
   }

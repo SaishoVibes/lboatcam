@@ -13,10 +13,10 @@ public final class BoatCamConfig implements ConfigData {
     private boolean boatcam = true;
     @Comment("Whether the old boatcam algorithm is used.")
     private boolean oldBoatcam;
-    @Comment("0 - Camera moves instantly.\nIncrease - Smoother camera motion.")
+    @Comment("0 - Camera moves instantly.\nIncrease - Smoother camera motion. Values close to 100 is not supposed to be used")
     @BoundedDiscrete(min = 0, max = 100)
     private int smoothening;
-    @Comment("Decrease - Follow the direction boat is facing more.\nIncrease - Follow the direction boat is moving more.")
+    @Comment("0 - Camera follows the direction boat is facing.\n100 - Camera follow the direction boat is moving.")
     @BoundedDiscrete(min = 0, max = 100)
     private int strength = 50;
     @Comment("Perspective when riding a boat in boat mode. Perspective wont change when this is set to none.")
@@ -28,10 +28,9 @@ public final class BoatCamConfig implements ConfigData {
     private int pitch = 10;
     @Comment("Whether to lock horizontal camera movement.")
     private boolean lockedYaw;
-    @Comment("Whether look left and look right is smoothened")
-    private boolean smoothenSideLook;
-    @Comment("Disables the turn limit in a boat.\nNOTE: The turn limit is always disabled in boat mode!")
-    private boolean turnLimitDisabled;
+    @Comment("Camera angle change of side look keybinds")
+    @BoundedDiscrete(min = 0, max = 180)
+    private int sideLookAngle = 90;
 
     private BoatCamConfig() { }
 
@@ -85,12 +84,8 @@ public final class BoatCamConfig implements ConfigData {
         return perspective;
     }
 
-    public boolean isSmoothenSideLook() {
-        return smoothenSideLook;
-    }
-
-    public boolean isTurnLimitDisabled() {
-        return turnLimitDisabled;
+    public int getSideLookAngle() {
+        return sideLookAngle;
     }
 
     public enum Perspective {
