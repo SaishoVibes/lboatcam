@@ -16,5 +16,7 @@
     "text.autoconfig.sboatcam.option.fixedPitch": "Fixed pitch",
     "text.autoconfig.sboatcam.option.pitch": "Pitch",
     "text.autoconfig.sboatcam.option.lockedYaw": "Locked yaw",
-    "text.autoconfig.sboatcam.option.sideLookAngle": "Side look angle"
+    "text.autoconfig.sboatcam.option.sideLookAngle": "Side look angle",
+    "text.autoconfig.sboatcam.option.mouseSteering": "Mouse steering",
+    "text.autoconfig.sboatcam.option.mouseSteeringSensitivity": "Mouse steering sensitivity"
 }

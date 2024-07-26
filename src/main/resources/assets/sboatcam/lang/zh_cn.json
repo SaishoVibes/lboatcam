@@ -16,5 +16,7 @@
     "text.autoconfig.sboatcam.option.fixedPitch": "固定俯仰角",
     "text.autoconfig.sboatcam.option.pitch": "俯仰角度",
     "text.autoconfig.sboatcam.option.lockedYaw": "锁定偏航角",
-    "text.autoconfig.sboatcam.option.sideLookAngle": "侧方视角角度"
+    "text.autoconfig.sboatcam.option.sideLookAngle": "侧方视角角度",
+    "text.autoconfig.sboatcam.option.mouseSteering": "鼠标转向",
+    "text.autoconfig.sboatcam.option.mouseSteeringSensitivity": "鼠标转向灵敏度"
   }

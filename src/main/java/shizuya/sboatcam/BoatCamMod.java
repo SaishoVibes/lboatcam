@@ -48,6 +48,7 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     private boolean lookingBehind;
     private boolean lookingLeft;
     private boolean lookingRight;
+    private static double mouseSteer;
 
     @Override
     public void onInitialize() {
@@ -193,12 +194,14 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     public boolean onLookDirectionChanging(double dx, double dy) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null && !(player.getVehicle() instanceof BoatEntity)) return false;
+        if (getConfig().isMouseSteering()) mouseSteer += dx / 64;
+        boolean islockedYaw = getConfig().shouldLockYaw() || getConfig().isMouseSteering();
         if (getConfig().isBoatcam() && this.speed >= 0.4) {
-            if (!getConfig().shouldLockYaw()) this.offset += dx / scale;
-            if ((getConfig().shouldLockYaw() && dx != 0) || (getConfig().shouldFixPitch() && dy != 0)) {
+            if (!islockedYaw) this.offset += dx / scale;
+            if ((islockedYaw && dx != 0) || (getConfig().shouldFixPitch() && dy != 0)) {
                 // prevent horizontal camera movement and cancel camera change by returning true
                 // prevent vertical movement as well if configured
-                player.changeLookDirection(getConfig().shouldLockYaw() ? 0 : dx, getConfig().shouldFixPitch() ? 0 : dy);
+                player.changeLookDirection(islockedYaw ? 0 : dx, getConfig().shouldFixPitch() ? 0 : dy);
                 return true;
             }
         }
@@ -211,5 +214,11 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
 
     public static float normaliseAngle(float angle) {
         return angle - (float) Math.floor(angle / 360 + 0.5) * 360;
+    }
+
+    public static float getMouseSteer() {
+        float temp = (float) (mouseSteer * getConfig().getSensitivity());
+        mouseSteer = 0;
+        return temp;
     }
 }

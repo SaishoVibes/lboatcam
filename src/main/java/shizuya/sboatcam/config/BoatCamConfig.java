@@ -13,7 +13,7 @@ public final class BoatCamConfig implements ConfigData {
     private boolean boatcam = true;
     @Comment("Whether the old boatcam algorithm is used.")
     private boolean oldBoatcam;
-    @Comment("0 - Camera moves instantly.\nIncrease - Smoother camera motion. Values close to 100 is not supposed to be used")
+    @Comment("0 - Camera moves instantly.\nIncrease - Smoother camera motion. \nValues close to 100 is not supposed to be used")
     @BoundedDiscrete(min = 0, max = 100)
     private int smoothening;
     @Comment("0 - Camera follows the direction boat is facing.\n100 - Camera follow the direction boat is moving.")
@@ -31,6 +31,11 @@ public final class BoatCamConfig implements ConfigData {
     @Comment("Camera angle change of side look keybinds")
     @BoundedDiscrete(min = 0, max = 180)
     private int sideLookAngle = 90;
+    @Comment("Whether mouse steering is enabled")
+    private boolean mouseSteering;
+    @Comment("Sensitivity for mouse steering. \nEach increase of 10 doubles the sensitivity")
+    @BoundedDiscrete(min = -30, max = 30)
+    private int mouseSteeringSensitivity;
 
     private BoatCamConfig() { }
 
@@ -86,6 +91,14 @@ public final class BoatCamConfig implements ConfigData {
 
     public int getSideLookAngle() {
         return sideLookAngle;
+    }
+
+    public boolean isMouseSteering() {
+        return mouseSteering;
+    }
+
+    public double getSensitivity() {
+        return Math.pow(2.0D, mouseSteeringSensitivity / 10.0D);
     }
 
     public enum Perspective {
