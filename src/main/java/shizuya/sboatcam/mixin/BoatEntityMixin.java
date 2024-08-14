@@ -15,8 +15,8 @@ import static shizuya.sboatcam.BoatCamMod.getMouseSteer;
 
 @Mixin(BoatEntity.class)
 public class BoatEntityMixin {
-    @Inject(method = "copyEntityData", at = @At("INVOKE"), cancellable = true)
-    private void copyEntityData(Entity entity, CallbackInfo info) {
+    @Inject(method = "clampPassengerYaw", at = @At("INVOKE"), cancellable = true)
+    private void clampPassengerYaw(Entity entity, CallbackInfo info) {
         // disable turn limit
         if (entity.equals(MinecraftClient.getInstance().player)) {
             // just copied the code and cancelled, easier than making a complicated mixin
