@@ -1,26 +1,17 @@
-# BoatCam [1.18.1][Fabric][Client]
-### Description
-imba camera mod for boat racing that should have never been allowed
+# sboatcam
+Imba camera mod for boat racing that should have never been allowed
 
 ### Features
-- Fixes the camera to a certain horizontal angle depending on the boat's direction and velocity
-- Configurable smoothness of the camera
-- Automatically go into first/third person view when entering a boat
-- Can be toggled using a key bind (boat mode/normal mode)
-- Another key bind allows you to look behind while the key bind is pressed
-- The camera's vertical angle can be fixed to a configurable angle as well
-- Graphical user interface to configure the mod when using [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu)
+- Moves the camera to a certain yaw angle depending on the boat's slip angle and speed with configurable strength and smoothness
+- Free camera movement when stationary
+- Option to fix the pitch angle of camera to a specfic angle
+- Option to allow horizontal camera movement as an offset which can be reset with a key bind
+- Option to automatically set the perspective to first/third person when entering a boat
+- Key binds that allows you to look left/right and behind while the key is being pressed
+- Mouse steering
 
-### Addition features from sboatcam
-- An optional new boatcam algorithm that moves camera more at high speed and less at low speed, as well as fixing camera snaps that happen when slip angle goes over 180°
-- Adjustable boatcam strength
-- Allows camera movement when stationary (also in Pigalala ver)
-- Option to allow horizontal camera movement as an offset and reset it with a key bind
-
-### Requirements
-This mod requires [ClothConfig](https://www.curseforge.com/minecraft/mc-mods/cloth-config/files) and [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu) is highly recommended.
-
-### Installation
-1. Download and install [Fabric](https://fabricmc.net/use/installer/) for the latest client version
-2. Download the [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) mod and put the .jar file into the mods folder
-3. Download [ClothConfig](https://www.curseforge.com/minecraft/mc-mods/cloth-config/files), [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu) (optional) and this mod and put the .jar files into the same folder
+### Dependencies
+- [Fabric Loader](https://fabricmc.net/use/installer/) (>=0.15.11)
+- [Fabric API](https://github.com/FabricMC/fabric/releases) (>=0.100.1)
+- [Cloth Config API](https://modrinth.com/mod/cloth-config/versions) (>=15.0.127)
+- [Mod Menu](https://github.com/TerraformersMC/ModMenu/releases) (>=11.0.0)
