@@ -25,7 +25,7 @@ import java.util.List;
 import static shizuya.sboatcam.config.BoatCamConfig.getConfig;
 import static java.lang.Math.*;
 import static net.minecraft.client.util.InputUtil.Type.KEYSYM;
-import static net.minecraft.util.Formatting.GREEN;
+import static net.minecraft.util.Formatting.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
@@ -98,11 +98,13 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
         // key bind logic
         if (TOGGLE.wasPressed()) {
             getConfig().toggleBoatcam();
-            client.inGameHud.setOverlayMessage(Text.literal(getConfig().isBoatcam() ? "Boatcam enabled" : "Boatcam disabled").styled(s -> s.withColor(GREEN)), false);
+            client.inGameHud.setOverlayMessage(Text.translatable(getConfig().isBoatcam() ? "sboatcam.boatcamEnabled" : "sboatcam.boatcamDisabled")
+                .styled(s -> s.withColor(getConfig().isBoatcam() ? GREEN : RED)), false);
         }
         if (TOGGLE_MOUSE_STEER.wasPressed()) {
             getConfig().toggleMouseSteer();
-            client.inGameHud.setOverlayMessage(Text.literal(getConfig().isMouseSteer() ? "Mouse steering enabled" : "Mouse steering disabled").styled(s -> s.withColor(GREEN)), false);
+            client.inGameHud.setOverlayMessage(Text.translatable(getConfig().isMouseSteer() ? "sboatcam.mouseSteerEnabled" : "sboatcam.mouseSteerDisabled")
+                .styled(s -> s.withColor(getConfig().isMouseSteer() ? GREEN : RED)), false);
         }
         // camera logic
         assert client.player != null;
