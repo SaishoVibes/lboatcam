@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static shizuya.sboatcam.BoatCamMod.getMouseSteer;
+import static shizuya.sboatcam.config.BoatCamConfig.getConfig;
 
 @Mixin(BoatEntity.class)
 public class BoatEntityMixin {
@@ -37,10 +38,10 @@ abstract class PaddleMixin {
     @Shadow private boolean pressingBack;
     @Shadow private float yawVelocity;
 
-    @Redirect(method = "tick",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/vehicle/BoatEntity;updatePaddles()V"))
-    private void replaceUpdatePaddles(BoatEntity instance) {
-        if (instance.hasPassengers()) {
+    @Inject(method = "Lnet/minecraft/entity/vehicle/BoatEntity;updatePaddles()V", at = @At("HEAD"), cancellable = true)
+    private void replaceUpdatePaddles(CallbackInfo ci) {
+        BoatEntity instance = (BoatEntity) (Object) this;
+        if (instance.hasPassengers() && getConfig().isMouseSteer()) {
             float acceleration = 0.0f;
             float steering = Math.min(1.0f, Math.max(-1.0f, (float) getMouseSteer() + (this.pressingRight ? 1.0f : 0.0f) + (this.pressingLeft ? -1.0f : 0.0f)));
             this.yawVelocity += steering;
@@ -59,6 +60,7 @@ abstract class PaddleMixin {
             Vec3d thrust = new Vec3d((double) (Math.sin(Math.toRadians(-instance.getYaw())) * acceleration), 0.0D, (double) (Math.cos(Math.toRadians(instance.getYaw())) * acceleration));
             instance.setVelocity(instance.getVelocity().add(thrust));
             instance.setPaddleMovings(steering > 0 || this.pressingForward, steering < 0 || this.pressingForward);
+            ci.cancel();
         }
     }
 }

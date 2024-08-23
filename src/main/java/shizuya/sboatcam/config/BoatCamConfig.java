@@ -80,8 +80,13 @@ public final class BoatCamConfig implements ConfigData {
         return pitch;
     }
 
-    public void toggleBoatMode() {
+    public void toggleBoatcam() {
         boatcam = !boatcam;
+        saveConfig();
+    }
+
+    public void toggleMouseSteer() {
+        mouseSteering = !mouseSteering;
         saveConfig();
     }
 
@@ -93,7 +98,7 @@ public final class BoatCamConfig implements ConfigData {
         return sideLookAngle;
     }
 
-    public boolean isMouseSteering() {
+    public boolean isMouseSteer() {
         return mouseSteering;
     }
 

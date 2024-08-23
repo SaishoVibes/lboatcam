@@ -26,16 +26,16 @@ import static shizuya.sboatcam.config.BoatCamConfig.getConfig;
 import static java.lang.Math.*;
 import static net.minecraft.client.util.InputUtil.Type.KEYSYM;
 import static net.minecraft.util.Formatting.GREEN;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_B;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_N;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     // key binds
     private final KeyBinding TOGGLE = new KeyBinding("key.sboatcam.toggle", KEYSYM, -1, "sboatcam");
+    private final KeyBinding TOGGLE_MOUSE_STEER = new KeyBinding("key.sboatcam.togglemousesteer", KEYSYM, GLFW_KEY_M, "sboatcam");
     private final KeyBinding LOOK_BEHIND = new KeyBinding("key.sboatcam.lookbehind", KEYSYM, GLFW_KEY_B, "sboatcam");
     private final KeyBinding LOOK_LEFT = new KeyBinding("key.sboatcam.lookleft", KEYSYM, -1, "sboatcam");
     private final KeyBinding LOOK_RIGHT = new KeyBinding("key.sboatcam.lookright", KEYSYM, -1, "sboatcam");
-    private final KeyBinding RESET_CAMERA = new KeyBinding("key.sboatcam.resetcamera", KEYSYM, GLFW_KEY_N, "sboatcam");
+    private final KeyBinding RESET_CAMERA = new KeyBinding("key.sboatcam.resetcamera", KEYSYM, -1, "sboatcam");
 
     // things to remember temporarily
     private Perspective perspective;
@@ -55,6 +55,7 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     public void onInitialize() {
         AutoConfig.register(BoatCamConfig.class, JanksonConfigSerializer::new);
         KeyBindingHelper.registerKeyBinding(TOGGLE);
+        KeyBindingHelper.registerKeyBinding(TOGGLE_MOUSE_STEER);
         KeyBindingHelper.registerKeyBinding(LOOK_BEHIND);
         KeyBindingHelper.registerKeyBinding(LOOK_LEFT);
         KeyBindingHelper.registerKeyBinding(LOOK_RIGHT);
@@ -96,8 +97,12 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
         scale = (double) client.getWindow().getWidth() / client.options.getFov().getValue();
         // key bind logic
         if (TOGGLE.wasPressed()) {
-            getConfig().toggleBoatMode();
-            client.inGameHud.setOverlayMessage(Text.literal(getConfig().isBoatcam() ? "BoatCam enabled" : "BoatCam disabled").styled(s -> s.withColor(GREEN)), false);
+            getConfig().toggleBoatcam();
+            client.inGameHud.setOverlayMessage(Text.literal(getConfig().isBoatcam() ? "Boatcam enabled" : "Boatcam disabled").styled(s -> s.withColor(GREEN)), false);
+        }
+        if (TOGGLE_MOUSE_STEER.wasPressed()) {
+            getConfig().toggleMouseSteer();
+            client.inGameHud.setOverlayMessage(Text.literal(getConfig().isMouseSteer() ? "Mouse steering enabled" : "Mouse steering disabled").styled(s -> s.withColor(GREEN)), false);
         }
         // camera logic
         assert client.player != null;
@@ -192,8 +197,8 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     public boolean onLookDirectionChanging(double dx, double dy) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null && !(player.getVehicle() instanceof BoatEntity)) return false;
-        if (getConfig().isMouseSteering()) mouseSteer += dx / 64;
-        boolean islockedYaw = getConfig().shouldLockYaw() || getConfig().isMouseSteering();
+        if (getConfig().isMouseSteer()) mouseSteer += dx / 64;
+        boolean islockedYaw = getConfig().shouldLockYaw() || getConfig().isMouseSteer();
         if (getConfig().isBoatcam() && this.speed >= 0.4) {
             if (!islockedYaw) this.offset += dx / scale;
             if ((islockedYaw && dx != 0) || (getConfig().shouldFixPitch() && dy != 0)) {
