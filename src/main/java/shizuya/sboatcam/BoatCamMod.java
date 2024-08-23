@@ -201,7 +201,7 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
         if (player != null && !(player.getVehicle() instanceof BoatEntity)) return false;
         if (getConfig().isMouseSteer()) mouseSteer += dx / 64;
         boolean islockedYaw = getConfig().shouldLockYaw() || getConfig().isMouseSteer();
-        if (getConfig().isBoatcam() && this.speed >= 0.4) {
+        if (getConfig().isBoatcam() && (this.speed >= 0.4) || getConfig().isMouseSteer()) {
             if (!islockedYaw) this.offset += dx / scale;
             if ((islockedYaw && dx != 0) || (getConfig().shouldFixPitch() && dy != 0)) {
                 // prevent horizontal camera movement and cancel camera change by returning true
