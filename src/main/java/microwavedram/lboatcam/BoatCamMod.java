@@ -1,7 +1,7 @@
-package shizuya.sboatcam;
+package microwavedram.lboatcam;
 
-import shizuya.sboatcam.config.BoatCamConfig;
-import shizuya.sboatcam.event.LookDirectionChangingEvent;
+import microwavedram.lboatcam.config.BoatCamConfig;
+import microwavedram.lboatcam.event.LookDirectionChangingEvent;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
@@ -22,7 +22,7 @@ import net.minecraft.util.math.Vec3d;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import static shizuya.sboatcam.config.BoatCamConfig.getConfig;
+import static microwavedram.lboatcam.config.BoatCamConfig.getConfig;
 import static java.lang.Math.*;
 import static net.minecraft.client.util.InputUtil.Type.KEYSYM;
 import static net.minecraft.util.Formatting.*;
@@ -30,12 +30,11 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     // key binds
-    private final KeyBinding TOGGLE = new KeyBinding("key.sboatcam.toggle", KEYSYM, -1, "sboatcam");
-    private final KeyBinding TOGGLE_MOUSE_STEER = new KeyBinding("key.sboatcam.togglemousesteer", KEYSYM, GLFW_KEY_M, "sboatcam");
-    private final KeyBinding LOOK_BEHIND = new KeyBinding("key.sboatcam.lookbehind", KEYSYM, GLFW_KEY_B, "sboatcam");
-    private final KeyBinding LOOK_LEFT = new KeyBinding("key.sboatcam.lookleft", KEYSYM, -1, "sboatcam");
-    private final KeyBinding LOOK_RIGHT = new KeyBinding("key.sboatcam.lookright", KEYSYM, -1, "sboatcam");
-    private final KeyBinding RESET_CAMERA = new KeyBinding("key.sboatcam.resetcamera", KEYSYM, -1, "sboatcam");
+    private final KeyBinding TOGGLE = new KeyBinding("key.lboatcam.toggle", KEYSYM, -1, "lboatcam");
+    private final KeyBinding LOOK_BEHIND = new KeyBinding("key.lboatcam.lookbehind", KEYSYM, GLFW_KEY_B, "lboatcam");
+    private final KeyBinding LOOK_LEFT = new KeyBinding("key.lboatcam.lookleft", KEYSYM, -1, "lboatcam");
+    private final KeyBinding LOOK_RIGHT = new KeyBinding("key.lboatcam.lookright", KEYSYM, -1, "lboatcam");
+    private final KeyBinding RESET_CAMERA = new KeyBinding("key.lboatcam.resetcamera", KEYSYM, -1, "lboatcam");
 
     // things to remember temporarily
     private Perspective perspective;
@@ -49,13 +48,11 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     private boolean lookingBehind;
     private boolean lookingLeft;
     private boolean lookingRight;
-    private static double mouseSteer;
 
     @Override
     public void onInitialize() {
         AutoConfig.register(BoatCamConfig.class, JanksonConfigSerializer::new);
         KeyBindingHelper.registerKeyBinding(TOGGLE);
-        KeyBindingHelper.registerKeyBinding(TOGGLE_MOUSE_STEER);
         KeyBindingHelper.registerKeyBinding(LOOK_BEHIND);
         KeyBindingHelper.registerKeyBinding(LOOK_LEFT);
         KeyBindingHelper.registerKeyBinding(LOOK_RIGHT);
@@ -83,9 +80,9 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
                     } catch (IllegalAccessException ignored) { }
                 })
                 .setEnumNameProvider(perspective -> switch ((BoatCamConfig.Perspective) perspective) {
-                    case FIRST_PERSON -> Text.translatable("text.autoconfig.sboatcam.option.perspective.firstPerson");
-                    case THIRD_PERSON -> Text.translatable("text.autoconfig.sboatcam.option.perspective.thirdPerson");
-                    case NONE -> Text.translatable("text.autoconfig.sboatcam.option.perspective.none");
+                    case FIRST_PERSON -> Text.translatable("text.autoconfig.lboatcam.option.perspective.firstPerson");
+                    case THIRD_PERSON -> Text.translatable("text.autoconfig.lboatcam.option.perspective.thirdPerson");
+                    case NONE -> Text.translatable("text.autoconfig.lboatcam.option.perspective.none");
                 })
                 .build())
             .map(AbstractConfigListEntry.class::cast)
@@ -98,13 +95,8 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
         // key bind logic
         if (TOGGLE.wasPressed()) {
             getConfig().toggleBoatcam();
-            client.inGameHud.setOverlayMessage(Text.translatable(getConfig().isBoatcam() ? "sboatcam.boatcamEnabled" : "sboatcam.boatcamDisabled")
+            client.inGameHud.setOverlayMessage(Text.translatable(getConfig().isBoatcam() ? "lboatcam.boatcamEnabled" : "lboatcam.boatcamDisabled")
                 .styled(s -> s.withColor(getConfig().isBoatcam() ? GREEN : RED)), false);
-        }
-        if (TOGGLE_MOUSE_STEER.wasPressed()) {
-            getConfig().toggleMouseSteer();
-            client.inGameHud.setOverlayMessage(Text.translatable(getConfig().isMouseSteer() ? "sboatcam.mouseSteerEnabled" : "sboatcam.mouseSteerDisabled")
-                .styled(s -> s.withColor(getConfig().isMouseSteer() ? GREEN : RED)), false);
         }
         // camera logic
         assert client.player != null;
@@ -199,9 +191,8 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
     public boolean onLookDirectionChanging(double dx, double dy) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null && !(player.getVehicle() instanceof BoatEntity)) return false;
-        if (getConfig().isMouseSteer()) mouseSteer += dx / 64;
-        boolean islockedYaw = getConfig().shouldLockYaw() || getConfig().isMouseSteer();
-        if (getConfig().isBoatcam() && (this.speed >= 0.4) || getConfig().isMouseSteer()) {
+        boolean islockedYaw = getConfig().shouldLockYaw();
+        if (getConfig().isBoatcam() && (this.speed >= 0.4)) {
             if (!islockedYaw) this.offset += dx / scale;
             if ((islockedYaw && dx != 0) || (getConfig().shouldFixPitch() && dy != 0)) {
                 // prevent horizontal camera movement and cancel camera change by returning true
@@ -219,11 +210,5 @@ public class BoatCamMod implements ModInitializer, LookDirectionChangingEvent {
 
     public static float normaliseAngle(float angle) {
         return angle - (float) Math.floor(angle / 360 + 0.5) * 360;
-    }
-
-    public static float getMouseSteer() {
-        float temp = (float) (mouseSteer * getConfig().getSensitivity());
-        mouseSteer = 0;
-        return temp;
     }
 }

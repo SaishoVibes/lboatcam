@@ -1,9 +1,9 @@
 {
     "schemaVersion": 1,
-    "id": "sboatcam",
+    "id": "lboatcam",
     "version": "${version}",
-    "name": "sboatcam",
-    "description": "Imba camera mod for boat racing that should have never been allowed.",
+    "name": "lboatcam",
+    "description": "Fork of sboatcam without mouse steering",
     "authors": [
         "Bstn1802",
         "Pigalala",
@@ -13,18 +13,18 @@
         "sources": "https://gitlab.com/5h1zuy4/sboatcam"
     },
     "license": "GPL-3.0-or-later",
-    "icon": "assets/sboatcam/icon.png",
+    "icon": "assets/lboatcam/icon.png",
     "environment": "client",
     "entrypoints": {
     "main": [
-        "shizuya.sboatcam.BoatCamMod"
+        "microwavedram.lboatcam.BoatCamMod"
     ],
     "modmenu": [
-        "shizuya.sboatcam.config.ModMenuIntegration"
+        "microwavedram.lboatcam.config.ModMenuIntegration"
     ]
     },
     "mixins": [
-        "sboatcam.mixins.json"
+        "lboatcam.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.15.11",

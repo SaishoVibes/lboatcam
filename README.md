@@ -1,5 +1,5 @@
-# sboatcam
-Imba camera mod for boat racing that should have never been allowed
+# lboatcam
+Fork of sboatcam without mouse steering
 
 ### Features
 - Moves the camera to a certain yaw angle depending on the boat's slip angle and speed with configurable strength and smoothness
@@ -8,7 +8,7 @@ Imba camera mod for boat racing that should have never been allowed
 - Option to allow horizontal camera movement as an offset which can be reset with a key bind
 - Option to automatically set the perspective to first/third person when entering a boat
 - Key binds that allows you to look left/right and behind while the key is being pressed
-- Mouse steering
+- ~~Mouse steering~~
 
 ### Dependencies
 - [Fabric Loader](https://fabricmc.net/use/installer/) (>=0.15.11)

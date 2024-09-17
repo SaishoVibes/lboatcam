@@ -1,4 +1,4 @@
-package shizuya.sboatcam.config;
+package microwavedram.lboatcam.config;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
@@ -7,7 +7,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry.BoundedDiscrete;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
 @SuppressWarnings({ "unused", "FieldCanBeLocal", "FieldMayBeFinal" })
-@Config(name = "sboatcam")
+@Config(name = "lboatcam")
 public final class BoatCamConfig implements ConfigData {
     @Comment("Whether the camera should be controlled by this mod.\nNOTE: This setting can be toggled using a key bind.")
     private boolean boatcam = true;
@@ -31,11 +31,6 @@ public final class BoatCamConfig implements ConfigData {
     @Comment("Camera angle change of side look keybinds")
     @BoundedDiscrete(min = 0, max = 180)
     private int sideLookAngle = 90;
-    @Comment("Whether mouse steering is enabled")
-    private boolean mouseSteering;
-    @Comment("Sensitivity for mouse steering. \nEach increase of 10 doubles the sensitivity")
-    @BoundedDiscrete(min = -30, max = 30)
-    private int mouseSteeringSensitivity;
 
     private BoatCamConfig() { }
 
@@ -85,25 +80,12 @@ public final class BoatCamConfig implements ConfigData {
         saveConfig();
     }
 
-    public void toggleMouseSteer() {
-        mouseSteering = !mouseSteering;
-        saveConfig();
-    }
-
     public Perspective getPerspective() {
         return perspective;
     }
 
     public int getSideLookAngle() {
         return sideLookAngle;
-    }
-
-    public boolean isMouseSteer() {
-        return mouseSteering;
-    }
-
-    public double getSensitivity() {
-        return Math.pow(2.0D, mouseSteeringSensitivity / 10.0D);
     }
 
     public enum Perspective {

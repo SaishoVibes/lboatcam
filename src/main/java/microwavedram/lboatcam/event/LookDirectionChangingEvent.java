@@ -1,4 +1,4 @@
-package shizuya.sboatcam.event;
+package microwavedram.lboatcam.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;

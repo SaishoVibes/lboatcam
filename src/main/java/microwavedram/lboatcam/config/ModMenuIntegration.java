@@ -1,4 +1,4 @@
-package shizuya.sboatcam.config;
+package microwavedram.lboatcam.config;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
