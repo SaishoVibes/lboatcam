@@ -12,13 +12,13 @@ public final class BoatCamConfig implements ConfigData {
     @Comment("Whether the camera should be controlled by this mod.\nNOTE: This setting can be toggled using a key bind.")
     private boolean boatcam = true;
     @Comment("Whether the old boatcam algorithm is used.")
-    private boolean oldBoatcam;
-    @Comment("0 - Camera moves instantly.\nIncrease - Smoother camera motion. \nValues close to 100 is not supposed to be used")
+    private boolean oldBoatcam = true;
+    @Comment("0 - Camera moves instantly.\nIncrease - Smoother camera motion. \nValues close to 100 are not supposed to be used")
     @BoundedDiscrete(min = 0, max = 100)
     private int smoothening;
-    @Comment("0 - Camera follows the direction boat is facing.\n100 - Camera follow the direction boat is moving.")
+    @Comment("0 - Camera follows the direction boat is facing.\n100 - Camera follow the direction boat is moving.\nUse 100 if you are used to old boatcam")
     @BoundedDiscrete(min = 0, max = 100)
-    private int strength = 50;
+    private int strength = 100;
     @Comment("Perspective when riding a boat in boat mode. Perspective wont change when this is set to none.")
     private Perspective perspective = Perspective.NONE;
     @Comment("Whether to fix the camera angle at a certain pitch.")
@@ -27,7 +27,7 @@ public final class BoatCamConfig implements ConfigData {
     @BoundedDiscrete(min = -90, max = 90)
     private int pitch = 10;
     @Comment("Whether to lock horizontal camera movement.")
-    private boolean lockedYaw;
+    private boolean lockedYaw = true;
     @Comment("Camera angle change of side look keybinds")
     @BoundedDiscrete(min = 0, max = 180)
     private int sideLookAngle = 90;

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Entity.class)
 public class EntityMixin {
-    @Inject(at = @At("INVOKE"), method = "changeLookDirection", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "changeLookDirection", cancellable = true)
     public void changeLookDirection(double dx, double dy, CallbackInfo info) {
         if (LookDirectionChangingEvent.EVENT.invoker().onLookDirectionChanging(dx, dy)) {
             info.cancel();

@@ -2,19 +2,16 @@ package microwavedram.lboatcam.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.entity.vehicle.AbstractBoatEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static microwavedram.lboatcam.config.BoatCamConfig.getConfig;
+@Mixin(AbstractBoatEntity.class)
+public class AbstractBoatEntityMixin {
 
-@Mixin(BoatEntity.class)
-public class BoatEntityMixin {
-    @Inject(method = "clampPassengerYaw", at = @At("INVOKE"), cancellable = true)
+    @Inject(method = "clampPassengerYaw", at = @At("HEAD"), cancellable = true)
     private void clampPassengerYaw(Entity entity, CallbackInfo info) {
         // disable turn limit
         if (entity.equals(MinecraftClient.getInstance().player)) {
